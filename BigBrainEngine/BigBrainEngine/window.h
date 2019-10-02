@@ -33,12 +33,6 @@ int Window_intit(int width, int height, char* name)
 
 	glfwMakeContextCurrent(Window);
 
-	glMatrixMode(GL_PROJECTION);
-	glLoadIdentity();
-	glOrtho(0, width, height, 0, -1, 1);
-	glMatrixMode(GL_MODELVIEW);
-	glLoadIdentity();
-
 	return 1;
 
 }
@@ -47,10 +41,15 @@ void Window_update(void(*update)(float))
 {
 	last = glfwGetTime();
 
+	// Clear the window
+
 	(*update)(delta);
 
 	glfwSwapBuffers(Window);
 	glfwPollEvents();
+
+	glClearColor(0.15f, 0.15f, 0.15f, 1.0f);
+	glClear(GL_COLOR_BUFFER_BIT);
 
 	now = glfwGetTime();
 	delta = (float)(now - last) * 10.0f;
