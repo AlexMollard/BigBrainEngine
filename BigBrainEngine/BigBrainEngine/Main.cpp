@@ -1,12 +1,17 @@
 #include <stdio.h>
 #include <GL/glew.h>
+#include <vector>
+#include <fstream>
 #include <iostream>
+#include <algorithm>
 #include "window.h"
+#include "BigBrainMath.h"
+
 
 static unsigned int CompileShader(unsigned int type, const std::string& source)
 {
 	unsigned int id = glCreateShader(type);
-	const char* src = source.c_str();
+	const GLchar* src = source.c_str();
 	glShaderSource(id, 1, &src, nullptr);
 	glCompileShader(id);
 
@@ -42,8 +47,9 @@ static unsigned int CreateShader(const std::string& vertexShader, const std::str
 	glGetProgramiv(program, GL_LINK_STATUS, &Success);
 	if (Success == GL_FALSE) 
 	{
-		char* errorMessage = (char*)alloca(Success * sizeof(char));
-		glGetProgramInfoLog(program, Success, &Success, errorMessage);
+		char errorMessage[128];
+		int errorSize;
+		glGetProgramInfoLog(program, 128, &errorSize, errorMessage);
 		std::cout << "Error linking shader program:" << std::endl;
 		std::cout << errorMessage << std::endl;
 	}
@@ -55,17 +61,27 @@ static unsigned int CreateShader(const std::string& vertexShader, const std::str
 	return program;
 }
 
-
 void EngineLoop(float delta)
 {
 
 
 }
 
+
+GLfloat * Hex_Corner(int i, float trisize)
+{
+	float angle_deg = 60 * i;
+	float angle_rad =  M_PI / 180 * angle_deg;
+
+	GLfloat Point[2] = { (trisize * cos(angle_rad)), (trisize * sin(angle_rad))};
+
+	return Point;
+}
+
 int main(int argc)
 {
 	// Creating a window
-	if (!Window_intit(1920, 1080, (char*)"Big Brain"))
+	if (!Window_intit(960, 720, (char*)"Big Brain"))
 	{
 		std::cout << "Failed to load window" << std::endl;
 		return 1;
@@ -80,21 +96,36 @@ int main(int argc)
 	// Outputting OpenGL Version and build
 	std::cout << "OpenGL Version: " << glGetString(GL_VERSION) << std::endl;
 
-	// Triangle positions (Vertices)
-	static const GLfloat trainglePositions[9]
+	int TriTotal = 0;
+	float triSize = 0.5f;
+
+	std::vector<GLfloat>triangles;
+
+	for (int i = 0; i < 1; i++)
 	{
-		-0.5f, -0.5f, 0.0f,
-		 0.0f,  0.5f, 0.0f,
-		 0.5f, -0.5f, 0.0f
-	};
+		TriTotal++;
+
+		GLfloat* currentCorner = Hex_Corner(i, triSize);	// [0] = x, [1] = y
+
+		currentCorner[0] = (currentCorner[0] * 0.5f + 0.5f);
+		currentCorner[1] = (currentCorner[1] * 0.5f + 0.5f);
+
+		// Left
+		triangles.push_back(-0.5f);  triangles.push_back(-0.5f);  triangles.push_back(0.0f);
+		
+		// Right
+		triangles.push_back(0.5f); triangles.push_back(0.5f); triangles.push_back(0.0f);
+		
+		// Center
+		triangles.push_back(0); triangles.push_back(currentCorner[1]); triangles.push_back(0.0f);
+	}
 
 	GLuint buffer;
 	glGenBuffers(1, &buffer);
 	glBindBuffer(GL_ARRAY_BUFFER, buffer);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * 9, trainglePositions, GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * 9 * TriTotal, triangles.data(), GL_STATIC_DRAW);
 
 	glEnableVertexAttribArray(0);
-	glBindBuffer(GL_ARRAY_BUFFER, buffer);
 
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);
 
@@ -102,11 +133,11 @@ int main(int argc)
 	std::string vertexShader =
 		"#version 330 core\n"
 		"\n"
-		"layout(location = 0) in vec4 position; \n"
+		"layout(location = 0) in vec4 Position; \n"
 		"\n"
 		"void main()\n"
 		"{\n"
-		"	gl_Position = position;\n"
+		"	gl_Position = Position;\n"
 		"}\n"
 		;
 
@@ -114,24 +145,38 @@ int main(int argc)
 	std::string fragmentShader =
 		"#version 330 core\n"
 		"\n"
-		"layout(location = 0) out vec4 color; \n"
+		"out vec4 FragColor; \n"
+		"uniform vec3 triColour;"
 		"\n"
 		"void main()\n"
 		"{\n"
-		"	color = vec4(1.0,1.0,0.0,1.0);\n"
+		"	FragColor = vec4(triColour,1.0);\n"
 		"}\n"
 		;
 
 
-	unsigned int shader = CreateShader(vertexShader, fragmentShader);
+	GLuint shader = CreateShader(vertexShader, fragmentShader);
+
+	GLuint colourID = glGetUniformLocation(shader, "triColour");
+
+
 	glUseProgram(shader);
+	glUniform3f(colourID, 1.0f, 0.5f, 0.0f);
+
+	int frameCount = 0;
 
 	// If the window is not closed enable the engine loop
 	while (!Window_shouldClose())
 	{
+		frameCount++;
 		Window_update(EngineLoop);
 
-		glDrawArrays(GL_TRIANGLES, 0, 3);
+		//float value = sin(frameCount * 0.01f) * 0.5f + 0.5f;
+		
+		glUniform3f(colourID, 1.0f, 1.0f, 0.0f);
+
+		glDrawArrays(GL_TRIANGLES, 0, 3 * TriTotal);
+		
 	}
 
 	glDeleteProgram(shader);
