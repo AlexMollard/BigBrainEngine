@@ -1,5 +1,7 @@
 ﻿  Main.cpp
-c:\users\s191067\desktop\bigbrainengine.git\trunk\bigbrainengine\bigbrainengine\main.cpp(73): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
-c:\users\s191067\desktop\bigbrainengine.git\trunk\bigbrainengine\bigbrainengine\main.cpp(74): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-c:\users\s191067\desktop\bigbrainengine.git\trunk\bigbrainengine\bigbrainengine\main.cpp(78): warning C4172: returning address of local variable or temporary: Point
-  BigBrainEngine.vcxproj -> C:\Users\s191067\Desktop\BigBrainEngine.git\trunk\BigBrainEngine\Debug\BigBrainEngine.exe
+c:\users\alexm\desktop\gameengine repo\bigbrainengine\bigbrainengine\main.cpp(86): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+c:\users\alexm\desktop\gameengine repo\bigbrainengine\bigbrainengine\main.cpp(87): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+c:\users\alexm\desktop\gameengine repo\bigbrainengine\bigbrainengine\main.cpp(206): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+c:\users\alexm\desktop\gameengine repo\bigbrainengine\bigbrainengine\main.cpp(207): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+c:\users\alexm\desktop\gameengine repo\bigbrainengine\bigbrainengine\main.cpp(91): warning C4172: returning address of local variable or temporary: Point
+  BigBrainEngine.vcxproj -> C:\Users\alexm\Desktop\GameEngine Repo\BigBrainEngine\Debug\BigBrainEngine.exe

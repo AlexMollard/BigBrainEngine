@@ -3,7 +3,11 @@
 #include <vector>
 #include <fstream>
 #include <iostream>
+#include <stdlib.h>
 #include <algorithm>
+#include <chrono> // std::chrono::microseconds
+#include <thread> // std::this_thread::sleep_for
+
 #include "window.h"
 #include "BigBrainMath.h"
 
@@ -67,6 +71,15 @@ void EngineLoop(float delta)
 
 }
 
+float Clamp(float input, float high, float low)
+{
+	if (input <= high || input >= low)
+		return input;
+
+	return (input > high ? high : low);
+
+}
+
 
 GLfloat * Hex_Corner(int i, float trisize)
 {
@@ -81,7 +94,7 @@ GLfloat * Hex_Corner(int i, float trisize)
 int main(int argc)
 {
 	// Creating a window
-	if (!Window_intit(960, 720, (char*)"Big Brain"))
+	if (!Window_intit(1920, 1080, (char*)"Big Brain"))
 	{
 		std::cout << "Failed to load window" << std::endl;
 		return 1;
@@ -97,38 +110,61 @@ int main(int argc)
 	std::cout << "OpenGL Version: " << glGetString(GL_VERSION) << std::endl;
 
 	int TriTotal = 0;
-	float triSize = 0.5f;
 
 	std::vector<GLfloat>triangles;
 
-	for (int i = 0; i < 1; i++)
-	{
-		TriTotal++;
+	//for (int i = 1; i < 4; i++)
+	//{
+	//	TriTotal++;
 
-		GLfloat* currentCorner = Hex_Corner(i, triSize);	// [0] = x, [1] = y
+	//	// Top
+	//	triangles.push_back(cos(i) / 2); triangles.push_back(sin(i) / 2); triangles.push_back(0.0f);
 
-		currentCorner[0] = (currentCorner[0] * 0.5f + 0.5f);
-		currentCorner[1] = (currentCorner[1] * 0.5f + 0.5f);
 
-		// Left
-		triangles.push_back(-0.5f);  triangles.push_back(-0.5f);  triangles.push_back(0.0f);
-		
-		// Right
-		triangles.push_back(0.5f); triangles.push_back(0.5f); triangles.push_back(0.0f);
-		
-		// Center
-		triangles.push_back(0); triangles.push_back(currentCorner[1]); triangles.push_back(0.0f);
-	}
+	//	// Right
+	//	triangles.push_back(cos(i - 1) / 2); triangles.push_back(sin(i - 1) / 2); triangles.push_back(0.0f);
 
-	GLuint buffer;
-	glGenBuffers(1, &buffer);
-	glBindBuffer(GL_ARRAY_BUFFER, buffer);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * 9 * TriTotal, triangles.data(), GL_STATIC_DRAW);
+	//	
+	//	// Left
+	//	triangles.push_back(cos(i) / 4); triangles.push_back(sin(i) / 4); triangles.push_back(0.0f);
 
-	glEnableVertexAttribArray(0);
+	//}
 
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);
 
+
+	////	Triangles
+	//
+	//GLuint buffer;
+	//glGenBuffers(1, &buffer);
+	//glBindBuffer(GL_ARRAY_BUFFER, buffer);
+	//glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * 9 * TriTotal, triangles.data(), GL_STATIC_DRAW);
+	//
+	//glEnableVertexAttribArray(0);
+	//
+	//glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);
+
+	//int DotTotal = 0;
+	//std::vector<GLfloat>dots;
+	//
+	//for (int i = 0; i < 400; i++)
+	//{
+	//	DotTotal++;
+	//
+	//	// Dot
+	//	dots.push_back(cos(i) / 2); dots.push_back(sin(i) / 2); dots.push_back(0.0f);
+	//
+	//	DotTotal++;
+	//	dots.push_back(cos(i) / 4); dots.push_back(sin(i) / 4); dots.push_back(0.0f);
+	//}
+	//
+	//GLuint VBO;
+	//glGenBuffers(1, &VBO);
+	//glBindBuffer(GL_ARRAY_BUFFER, VBO);
+	//glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * 3 * DotTotal, dots.data(), GL_STATIC_DRAW);
+	//
+	//glEnableVertexAttribArray(0);
+	//glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);
+	//glPointSize(10.0f);
 
 	std::string vertexShader =
 		"#version 330 core\n"
@@ -161,20 +197,78 @@ int main(int argc)
 
 
 	glUseProgram(shader);
-	glUniform3f(colourID, 1.0f, 0.5f, 0.0f);
 
-	int frameCount = 0;
+	float frameCount = 0.0f;
+
+	// Must be below 180
+	float triSize = 5.625f;
+
+	float radiansSize = triSize * M_PI / 180;
+	int fullCircle = (360 / triSize);
 
 	// If the window is not closed enable the engine loop
 	while (!Window_shouldClose())
 	{
-		frameCount++;
+		frameCount += radiansSize;
 		Window_update(EngineLoop);
 
 		//float value = sin(frameCount * 0.01f) * 0.5f + 0.5f;
 		
+		if (TriTotal < fullCircle * 2)
+		{
+			std::this_thread::sleep_for(std::chrono::milliseconds{100});
+
+			TriTotal ++;
+
+			// Top
+			triangles.push_back(cos(frameCount)); triangles.push_back(sin(frameCount) ); triangles.push_back(0.0f);
+			
+			
+			// Right
+			triangles.push_back(cos(frameCount - radiansSize)); triangles.push_back(sin(frameCount - radiansSize)); triangles.push_back(0.0f);
+			
+			
+			// Left
+			triangles.push_back(cos(frameCount - (radiansSize / 2)) / 2); triangles.push_back(sin(frameCount - (radiansSize / 2)) / 2); triangles.push_back(0.0f);
+			
+			
+			TriTotal++;
+			// Top
+			triangles.push_back(cos(frameCount - (radiansSize / 2)) / 2); triangles.push_back(sin(frameCount - (radiansSize / 2)) / 2); triangles.push_back(0.0f);
+
+
+			// Right
+			triangles.push_back(cos(frameCount + (radiansSize / 2)) / 2); triangles.push_back(sin(frameCount + (radiansSize / 2)) / 2); triangles.push_back(0.0f);
+
+
+			// Left
+			triangles.push_back(cos(frameCount)); triangles.push_back(sin(frameCount)); triangles.push_back(0.0f);
+
+
+
+
+			//	Triangles
+
+			GLuint buffer;
+			glGenBuffers(1, &buffer);
+			glBindBuffer(GL_ARRAY_BUFFER, buffer);
+			glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * 9 * TriTotal, triangles.data(), GL_STATIC_DRAW);
+
+			glEnableVertexAttribArray(0);
+
+			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);
+		}
+
+		
+
+
+
+
 		glUniform3f(colourID, 1.0f, 1.0f, 0.0f);
 
+		// Draw Dots
+		//glDrawArrays(GL_POINTS, 0, 1 * DotTotal);
+		
 		glDrawArrays(GL_TRIANGLES, 0, 3 * TriTotal);
 		
 	}
