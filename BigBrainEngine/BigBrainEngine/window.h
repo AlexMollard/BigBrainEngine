@@ -45,6 +45,11 @@ void Window_update(void(*update)(float))
 
 	(*update)(delta);
 
+
+
+
+
+
 	glfwSwapBuffers(Window);
 	glfwPollEvents();
 

@@ -80,15 +80,15 @@ float Clamp(float input, float high, float low)
 
 }
 
-
-GLfloat * Hex_Corner(int i, float trisize)
+void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
-	float angle_deg = 60 * i;
-	float angle_rad =  M_PI / 180 * angle_deg;
+	if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
+	{
+		// Destroy the window and free memory
+		Window_destroy();
 
-	GLfloat Point[2] = { (trisize * cos(angle_rad)), (trisize * sin(angle_rad))};
-
-	return Point;
+		exit(0);
+	}
 }
 
 int main(int argc)
@@ -109,71 +109,20 @@ int main(int argc)
 	// Outputting OpenGL Version and build
 	std::cout << "OpenGL Version: " << glGetString(GL_VERSION) << std::endl;
 
-	int TriTotal = 0;
-
-	std::vector<GLfloat>triangles;
-
-	//for (int i = 1; i < 4; i++)
-	//{
-	//	TriTotal++;
-
-	//	// Top
-	//	triangles.push_back(cos(i) / 2); triangles.push_back(sin(i) / 2); triangles.push_back(0.0f);
 
 
-	//	// Right
-	//	triangles.push_back(cos(i - 1) / 2); triangles.push_back(sin(i - 1) / 2); triangles.push_back(0.0f);
+	glfwSetKeyCallback(Window, key_callback);
 
-	//	
-	//	// Left
-	//	triangles.push_back(cos(i) / 4); triangles.push_back(sin(i) / 4); triangles.push_back(0.0f);
-
-	//}
-
-
-
-	////	Triangles
-	//
-	//GLuint buffer;
-	//glGenBuffers(1, &buffer);
-	//glBindBuffer(GL_ARRAY_BUFFER, buffer);
-	//glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * 9 * TriTotal, triangles.data(), GL_STATIC_DRAW);
-	//
-	//glEnableVertexAttribArray(0);
-	//
-	//glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);
-
-	//int DotTotal = 0;
-	//std::vector<GLfloat>dots;
-	//
-	//for (int i = 0; i < 400; i++)
-	//{
-	//	DotTotal++;
-	//
-	//	// Dot
-	//	dots.push_back(cos(i) / 2); dots.push_back(sin(i) / 2); dots.push_back(0.0f);
-	//
-	//	DotTotal++;
-	//	dots.push_back(cos(i) / 4); dots.push_back(sin(i) / 4); dots.push_back(0.0f);
-	//}
-	//
-	//GLuint VBO;
-	//glGenBuffers(1, &VBO);
-	//glBindBuffer(GL_ARRAY_BUFFER, VBO);
-	//glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * 3 * DotTotal, dots.data(), GL_STATIC_DRAW);
-	//
-	//glEnableVertexAttribArray(0);
-	//glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);
-	//glPointSize(10.0f);
 
 	std::string vertexShader =
 		"#version 330 core\n"
 		"\n"
 		"layout(location = 0) in vec4 Position; \n"
+		"uniform float gScale;"
 		"\n"
 		"void main()\n"
 		"{\n"
-		"	gl_Position = Position;\n"
+		"	gl_Position = vec4(gScale * Position.x, gScale * Position.y, Position.z, 1.0);\n"
 		"}\n"
 		;
 
@@ -190,15 +139,21 @@ int main(int argc)
 		"}\n"
 		;
 
+	static float Scale = 0.75f;
 
 	GLuint shader = CreateShader(vertexShader, fragmentShader);
 
 	GLuint colourID = glGetUniformLocation(shader, "triColour");
 
+	GLuint gScaleLocation = glGetUniformLocation(shader, "gScale");
 
 	glUseProgram(shader);
 
 	float frameCount = 0.0f;
+
+	int TriTotal = 0;
+
+	std::vector<GLfloat>triangles;
 
 	// Must be below 180
 	float triSize = 5.625f;
@@ -211,6 +166,7 @@ int main(int argc)
 	{
 		frameCount += radiansSize;
 		Window_update(EngineLoop);
+		Scale += 0.0001f;
 
 		//float value = sin(frameCount * 0.01f) * 0.5f + 0.5f;
 		
@@ -259,15 +215,8 @@ int main(int argc)
 			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);
 		}
 
-		
-
-
-
-
 		glUniform3f(colourID, 1.0f, 1.0f, 0.0f);
-
-		// Draw Dots
-		//glDrawArrays(GL_POINTS, 0, 1 * DotTotal);
+		glUniform1f(gScaleLocation, Scale);
 		
 		glDrawArrays(GL_TRIANGLES, 0, 3 * TriTotal);
 		
