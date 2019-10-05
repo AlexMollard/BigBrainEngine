@@ -77,7 +77,6 @@ float Clamp(float input, float high, float low)
 		return input;
 
 	return (input > high ? high : low);
-
 }
 
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
