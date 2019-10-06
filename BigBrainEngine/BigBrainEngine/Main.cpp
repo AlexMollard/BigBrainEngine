@@ -108,10 +108,7 @@ int main(int argc)
 	// Outputting OpenGL Version and build
 	std::cout << "OpenGL Version: " << glGetString(GL_VERSION) << std::endl;
 
-
-
 	glfwSetKeyCallback(Window, key_callback);
-
 
 	std::string vertexShader =
 		"#version 330 core\n"
@@ -155,7 +152,9 @@ int main(int argc)
 	std::vector<GLfloat>triangles;
 
 	// Must be below 180
-	float triSize = 5.625f;
+	int faces = 30;
+
+	float triSize = 360 / faces;
 
 	float radiansSize = triSize * M_PI / 180;
 	int fullCircle = (360 / triSize);
@@ -165,7 +164,7 @@ int main(int argc)
 	{
 		frameCount += radiansSize;
 		Window_update(EngineLoop);
-		Scale += 0.0001f;
+		Scale -= 0.0001f;
 
 		//float value = sin(frameCount * 0.01f) * 0.5f + 0.5f;
 		
