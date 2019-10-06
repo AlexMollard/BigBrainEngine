@@ -1,16 +1,53 @@
-#include <stdio.h>
 #include <GL/glew.h>
 #include <vector>
 #include <fstream>
 #include <iostream>
-#include <stdlib.h>
-#include <algorithm>
-#include <chrono> // std::chrono::microseconds
-#include <thread> // std::this_thread::sleep_for
+#include <string>
+#include <sstream>
 
 #include "window.h"
 #include "BigBrainMath.h"
 
+struct ShaderPROSource
+{
+	std::string VertexSource;
+	std::string FragmentSource;
+};
+
+
+static ShaderPROSource ParseShader(const std::string& filePath)
+{
+	std::ifstream stream(filePath);
+
+	enum class ShaderType
+	{
+		NONE = -1, VERTEX = 0, FRAGMENT = 1
+	};
+
+	std::stringstream ss[2];
+	std::string line;
+	ShaderType type = ShaderType::NONE;
+	while (getline(stream, line))
+	{
+		if (line.find("#shader") != std::string::npos)
+		{
+			if (line.find("vertex") != std::string::npos)
+			{
+				type = ShaderType::VERTEX;
+			}
+			else if (line.find("fragment") != std::string::npos)
+			{
+				type = ShaderType::FRAGMENT;
+			}
+		}
+		else
+		{
+			ss[(int)type] << line << '\n';
+		}
+	}
+
+	return { ss[0].str(), ss[1].str() };
+}
 
 static unsigned int CompileShader(unsigned int type, const std::string& source)
 {
@@ -92,6 +129,20 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 
 int main(int argc)
 {
+	// Shader Uniforms
+	static float Scale = 0.75f;
+
+	// Circle Attributes
+	int TriTotal = 0;
+	int faces = 200;
+	float triangleBufferCount = 0.0f;
+	float triSize = 360 / faces;
+	float radiansSize = triSize * M_PI / 180;
+	int fullCircle = (360 / triSize);
+
+	// Triangle buffer
+	std::vector<GLfloat>triangles;
+
 	// Creating a window
 	if (!Window_intit(1920, 1080, (char*)"Big Brain"))
 	{
@@ -108,116 +159,60 @@ int main(int argc)
 	// Outputting OpenGL Version and build
 	std::cout << "OpenGL Version: " << glGetString(GL_VERSION) << std::endl;
 
+	// Get user input
 	glfwSetKeyCallback(Window, key_callback);
 
-	std::string vertexShader =
-		"#version 330 core\n"
-		"\n"
-		"layout(location = 0) in vec4 Position; \n"
-		"uniform float gScale;"
-		"\n"
-		"void main()\n"
-		"{\n"
-		"	gl_Position = vec4(gScale * Position.x, gScale * Position.y, Position.z, 1.0);\n"
-		"}\n"
-		;
+	// Get shder source
+	ShaderPROSource source = ParseShader("Basic.shader");
 
+	// Create shader program
+	GLuint shader = CreateShader(source.VertexSource, source.FragmentSource);
 
-	std::string fragmentShader =
-		"#version 330 core\n"
-		"\n"
-		"out vec4 FragColor; \n"
-		"uniform vec3 triColour;"
-		"\n"
-		"void main()\n"
-		"{\n"
-		"	FragColor = vec4(triColour,1.0);\n"
-		"}\n"
-		;
-
-	static float Scale = 0.75f;
-
-	GLuint shader = CreateShader(vertexShader, fragmentShader);
-
+	// Assign shader uniform variables
 	GLuint colourID = glGetUniformLocation(shader, "triColour");
-
 	GLuint gScaleLocation = glGetUniformLocation(shader, "gScale");
 
+	// Use this shader
 	glUseProgram(shader);
-
-	float frameCount = 0.0f;
-
-	int TriTotal = 0;
-
-	std::vector<GLfloat>triangles;
-
-	// Must be below 180
-	int faces = 30;
-
-	float triSize = 360 / faces;
-
-	float radiansSize = triSize * M_PI / 180;
-	int fullCircle = (360 / triSize);
 
 	// If the window is not closed enable the engine loop
 	while (!Window_shouldClose())
 	{
-		frameCount += radiansSize;
 		Window_update(EngineLoop);
-		Scale -= 0.0001f;
-
-		//float value = sin(frameCount * 0.01f) * 0.5f + 0.5f;
 		
 		if (TriTotal < fullCircle * 2)
 		{
-			std::this_thread::sleep_for(std::chrono::milliseconds{100});
-
+			triangleBufferCount += radiansSize;
 			TriTotal ++;
-
-			// Top
-			triangles.push_back(cos(frameCount)); triangles.push_back(sin(frameCount) ); triangles.push_back(0.0f);
-			
-			
-			// Right
-			triangles.push_back(cos(frameCount - radiansSize)); triangles.push_back(sin(frameCount - radiansSize)); triangles.push_back(0.0f);
-			
-			
-			// Left
-			triangles.push_back(cos(frameCount - (radiansSize / 2)) / 2); triangles.push_back(sin(frameCount - (radiansSize / 2)) / 2); triangles.push_back(0.0f);
-			
+			triangles.push_back(cos(triangleBufferCount)); triangles.push_back(sin(triangleBufferCount) ); triangles.push_back(0.0f);
+			triangles.push_back(cos(triangleBufferCount - radiansSize)); triangles.push_back(sin(triangleBufferCount - radiansSize)); triangles.push_back(0.0f);
+			triangles.push_back(cos(triangleBufferCount - (radiansSize / 2)) / 2); triangles.push_back(sin(triangleBufferCount - (radiansSize / 2)) / 2); triangles.push_back(0.0f);
 			
 			TriTotal++;
-			// Top
-			triangles.push_back(cos(frameCount - (radiansSize / 2)) / 2); triangles.push_back(sin(frameCount - (radiansSize / 2)) / 2); triangles.push_back(0.0f);
-
-
-			// Right
-			triangles.push_back(cos(frameCount + (radiansSize / 2)) / 2); triangles.push_back(sin(frameCount + (radiansSize / 2)) / 2); triangles.push_back(0.0f);
-
-
-			// Left
-			triangles.push_back(cos(frameCount)); triangles.push_back(sin(frameCount)); triangles.push_back(0.0f);
-
-
-
+			triangles.push_back(cos(triangleBufferCount - (radiansSize / 2)) / 2); triangles.push_back(sin(triangleBufferCount - (radiansSize / 2)) / 2); triangles.push_back(0.0f);
+			triangles.push_back(cos(triangleBufferCount + (radiansSize / 2)) / 2); triangles.push_back(sin(triangleBufferCount + (radiansSize / 2)) / 2); triangles.push_back(0.0f);
+			triangles.push_back(cos(triangleBufferCount)); triangles.push_back(sin(triangleBufferCount)); triangles.push_back(0.0f);
 
 			//	Triangles
-
 			GLuint buffer;
 			glGenBuffers(1, &buffer);
 			glBindBuffer(GL_ARRAY_BUFFER, buffer);
 			glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * 9 * TriTotal, triangles.data(), GL_STATIC_DRAW);
 
 			glEnableVertexAttribArray(0);
-
 			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);
 		}
+		else
+			Scale -= 0.0001f;
 
+		// Change colour
 		glUniform3f(colourID, 1.0f, 1.0f, 0.0f);
+
+		// Change scale
 		glUniform1f(gScaleLocation, Scale);
 		
+		// Draw all tris
 		glDrawArrays(GL_TRIANGLES, 0, 3 * TriTotal);
-		
 	}
 
 	glDeleteProgram(shader);
