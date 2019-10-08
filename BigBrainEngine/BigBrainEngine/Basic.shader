@@ -3,10 +3,11 @@
 
 layout(location = 0) in vec4 Position; 
 uniform float gScale;
+uniform mat4 MVP;
 
 void main()
 {
-	gl_Position = vec4(gScale * Position.x / 2.0, gScale * Position.y / 2.0, Position.z, 1.0);
+	gl_Position = MVP * Position;
 }
 
 
@@ -14,9 +15,16 @@ void main()
 #version 330 core
 
 out vec4 FragColor; 
+in vec2 gl_FragCoord;
+
+uniform vec2 iResolution;
 uniform vec3 triColour;
+uniform float iTime;
 
 void main()
 {
-	FragColor = vec4(triColour,1.0);
+	vec2 uv = gl_FragCoord / iResolution.xy;
+	vec3 col = 0.5 + 0.5 * cos(iTime + uv.xyx + vec3(0, 2, 4));
+
+	FragColor = vec4(col,1.0);
 }

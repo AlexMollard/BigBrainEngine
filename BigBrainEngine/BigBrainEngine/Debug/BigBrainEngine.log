@@ -1,5 +1,5 @@
 ﻿  Main.cpp
-c:\users\alexm\desktop\gameengine repo\bigbrainengine\bigbrainengine\main.cpp(139): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
-c:\users\alexm\desktop\gameengine repo\bigbrainengine\bigbrainengine\main.cpp(140): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-c:\users\alexm\desktop\gameengine repo\bigbrainengine\bigbrainengine\main.cpp(141): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
-  BigBrainEngine.vcxproj -> C:\Users\alexm\Desktop\GameEngine Repo\BigBrainEngine\Debug\BigBrainEngine.exe
+c:\users\s191067\desktop\engine\trunk\bigbrainengine\bigbrainengine\main.cpp(150): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+c:\users\s191067\desktop\engine\trunk\bigbrainengine\bigbrainengine\main.cpp(151): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+c:\users\s191067\desktop\engine\trunk\bigbrainengine\bigbrainengine\main.cpp(152): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+  BigBrainEngine.vcxproj -> C:\Users\s191067\Desktop\Engine\trunk\BigBrainEngine\Debug\BigBrainEngine.exe

@@ -4,9 +4,18 @@
 #include <iostream>
 #include <string>
 #include <sstream>
+#include <chrono>
+#include <thread>
 
 #include "window.h"
 #include "BigBrainMath.h"
+
+#define xRES 720
+#define yRES 480
+
+using namespace std::this_thread;     // sleep_for, sleep_until
+using namespace std::chrono_literals; // ns, us, ms, s, h, etc.
+using std::chrono::system_clock;
 
 struct ShaderPROSource
 {
@@ -130,11 +139,13 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 int main(int argc)
 {
 	// Shader Uniforms
-	static float Scale = 0.75f;
+	static float Scale = 1.0f;
+	float timer = 0.0f;
 
 	// Circle Attributes
+	bool side = false;
 	int TriTotal = 0;
-	int faces = 200;
+	int faces = 300;
 	float triangleBufferCount = 0.0f;
 	float triSize = 360 / faces;
 	float radiansSize = triSize * M_PI / 180;
@@ -142,9 +153,11 @@ int main(int argc)
 
 	// Triangle buffer
 	std::vector<GLfloat>triangles;
+	//	Triangles
+	GLuint buffer;
 
 	// Creating a window
-	if (!Window_intit(1920, 1080, (char*)"Big Brain"))
+	if (!Window_intit(xRES, yRES, (char*)"Big Brain"))
 	{
 		std::cout << "Failed to load window" << std::endl;
 		return 1;
@@ -162,6 +175,18 @@ int main(int argc)
 	// Get user input
 	glfwSetKeyCallback(Window, key_callback);
 
+	glm::mat4 Projection = glm::perspective((float)glm::radians(45.0f), (float)xRES / (float)yRES, 0.1f, 100.0f);
+
+	// Camera matrix
+	glm::mat4 View = glm::lookAt(
+		glm::vec3(-1, 1, 0), // Camera is at in World Space
+		glm::vec3(0, 0.0f, 1), // and looks at the origin
+		glm::vec3(0, 1, 0)  // Head is up
+	);
+	glm::mat4 Model = glm::mat4(1.0f);
+
+	glm::mat4 mvp = Projection * View * Model;
+
 	// Get shder source
 	ShaderPROSource source = ParseShader("Basic.shader");
 
@@ -171,30 +196,54 @@ int main(int argc)
 	// Assign shader uniform variables
 	GLuint colourID = glGetUniformLocation(shader, "triColour");
 	GLuint gScaleLocation = glGetUniformLocation(shader, "gScale");
+	GLuint iResolution = glGetUniformLocation(shader, "iResolution");
+	GLuint iTime = glGetUniformLocation(shader, "iTime");
+	GLuint MatrixID = glGetUniformLocation(shader, "MVP");
 
 	// Use this shader
 	glUseProgram(shader);
 
+
+	// Change scale
+	glUniform2f(iResolution, xRES, yRES);
+	glUniform1f(iTime, timer);
+	glUniformMatrix4fv(MatrixID, 1, GL_FALSE, &mvp[0][0]);
+
+
 	// If the window is not closed enable the engine loop
 	while (!Window_shouldClose())
 	{
+		glUniformMatrix4fv(MatrixID, 1, GL_FALSE, &mvp[0][0]);
 		Window_update(EngineLoop);
-		
+		timer += 0.01f;
+
+		mvp = Projection * View * Model;
+
+
 		if (TriTotal < fullCircle * 2)
 		{
+			//sleep_for(10ms);
+
+			if (side)
+			{
+			side = false;
 			triangleBufferCount += radiansSize;
 			TriTotal ++;
-			triangles.push_back(cos(triangleBufferCount)); triangles.push_back(sin(triangleBufferCount) ); triangles.push_back(0.0f);
-			triangles.push_back(cos(triangleBufferCount - radiansSize)); triangles.push_back(sin(triangleBufferCount - radiansSize)); triangles.push_back(0.0f);
-			triangles.push_back(cos(triangleBufferCount - (radiansSize / 2)) / 2); triangles.push_back(sin(triangleBufferCount - (radiansSize / 2)) / 2); triangles.push_back(0.0f);
+			triangles.push_back(cos(triangleBufferCount)); triangles.push_back(sin(triangleBufferCount) ); triangles.push_back(1.0f);
+			triangles.push_back(cos(triangleBufferCount - radiansSize)); triangles.push_back(sin(triangleBufferCount - radiansSize)); triangles.push_back(1.0f);
+			triangles.push_back(cos(triangleBufferCount - (radiansSize / 2)) / 2); triangles.push_back(sin(triangleBufferCount - (radiansSize / 2)) / 2); triangles.push_back(1.0f);
+			}
+			else
+			{
+				side = true;
 			
 			TriTotal++;
-			triangles.push_back(cos(triangleBufferCount - (radiansSize / 2)) / 2); triangles.push_back(sin(triangleBufferCount - (radiansSize / 2)) / 2); triangles.push_back(0.0f);
-			triangles.push_back(cos(triangleBufferCount + (radiansSize / 2)) / 2); triangles.push_back(sin(triangleBufferCount + (radiansSize / 2)) / 2); triangles.push_back(0.0f);
-			triangles.push_back(cos(triangleBufferCount)); triangles.push_back(sin(triangleBufferCount)); triangles.push_back(0.0f);
+			triangles.push_back(cos(triangleBufferCount - (radiansSize / 2)) / 2); triangles.push_back(sin(triangleBufferCount - (radiansSize / 2)) / 2); triangles.push_back(1.0f);
+			triangles.push_back(cos(triangleBufferCount + (radiansSize / 2)) / 2); triangles.push_back(sin(triangleBufferCount + (radiansSize / 2)) / 2); triangles.push_back(1.0f);
+			triangles.push_back(cos(triangleBufferCount)); triangles.push_back(sin(triangleBufferCount)); triangles.push_back(1.0f);
+			}
 
-			//	Triangles
-			GLuint buffer;
+
 			glGenBuffers(1, &buffer);
 			glBindBuffer(GL_ARRAY_BUFFER, buffer);
 			glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * 9 * TriTotal, triangles.data(), GL_STATIC_DRAW);
@@ -202,15 +251,16 @@ int main(int argc)
 			glEnableVertexAttribArray(0);
 			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);
 		}
-		else
-			Scale -= 0.0001f;
+		//else
+			//Scale -= 0.01f;
 
 		// Change colour
 		glUniform3f(colourID, 1.0f, 1.0f, 0.0f);
 
 		// Change scale
 		glUniform1f(gScaleLocation, Scale);
-		
+		glUniform1f(iTime, timer);
+
 		// Draw all tris
 		glDrawArrays(GL_TRIANGLES, 0, 3 * TriTotal);
 	}
