@@ -24,14 +24,26 @@
     <ClInclude Include="BigBrainMath.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Shapes.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ShaderManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="ShaderManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Basic.shader">
+      <Filter>Resource Files\shaders</Filter>
+    </None>
+    <None Include="BasicTwo.shader">
       <Filter>Resource Files\shaders</Filter>
     </None>
   </ItemGroup>

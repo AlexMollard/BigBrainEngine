@@ -1,5 +1,5 @@
 #include <stdlib.h>
-#include <GLFW/glfw3.h>
+#include "ShaderManager.h"
 
 // Main Window
 GLFWwindow *Window;
@@ -52,8 +52,8 @@ void Window_update(void(*update)(float))
 	glfwSwapBuffers(Window);
 	glfwPollEvents();
 
-	glClearColor(0.15f, 0.15f, 0.15f, 1.0f);
-	glClear(GL_COLOR_BUFFER_BIT);
+	glClearColor(0.0f, 0.0f, 0.2f, 1.0f);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	now = glfwGetTime();
 	delta = (float)(now - last) * 10.0f;

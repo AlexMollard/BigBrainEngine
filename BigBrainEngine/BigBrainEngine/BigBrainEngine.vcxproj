@@ -169,13 +169,17 @@
       <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">C:\OpenGL\glew\include;C:\OpenGL\glfw;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">C:\OpenGL\glew\include;C:\OpenGL\glfw;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
+    <ClCompile Include="ShaderManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BigBrainMath.h" />
+    <ClInclude Include="ShaderManager.h" />
+    <ClInclude Include="Shapes.h" />
     <ClInclude Include="window.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Basic.shader" />
+    <None Include="BasicTwo.shader" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
