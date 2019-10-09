@@ -1,7 +1,2 @@
-﻿  Main.cpp
-c:\users\s191067\desktop\engine\trunk\bigbrainengine\bigbrainengine\main.cpp(44): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
-c:\users\s191067\desktop\engine\trunk\bigbrainengine\bigbrainengine\main.cpp(76): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-c:\users\s191067\desktop\engine\trunk\bigbrainengine\bigbrainengine\main.cpp(79): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-c:\users\s191067\desktop\engine\trunk\bigbrainengine\bigbrainengine\main.cpp(83): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-  ShaderManager.cpp
+﻿  ModelManager.cpp
   BigBrainEngine.vcxproj -> C:\Users\s191067\Desktop\Engine\trunk\BigBrainEngine\Debug\BigBrainEngine.exe

@@ -6,6 +6,7 @@
 #include <string>
 #include <sstream>
 #include <fstream>
+#include <vector>
 
 struct ShaderPROSource
 {
@@ -16,12 +17,16 @@ struct ShaderPROSource
 class ShaderManager
 {
 public:
-	ShaderManager();
+	ShaderManager(std::string shaderDIR);
 	~ShaderManager();
 
 	ShaderPROSource ParseShader(const std::string& filePath);
 	unsigned int CompileShader(unsigned int type, const std::string& source);
 	unsigned int CreateShader(const std::string& vertexShader, const std::string& fragmentShader);
+
+	//Uniforms
+	GLuint shader;
+
 };
 
 

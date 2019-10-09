@@ -1,12 +1,15 @@
 #include "ShaderManager.h"
 
-ShaderManager::ShaderManager()
+ShaderManager::ShaderManager(std::string shaderDIR)
 {
+	ShaderPROSource source = ParseShader("Basic.shader");
+	shader = CreateShader(source.VertexSource, source.FragmentSource);
 }
 
 
 ShaderManager::~ShaderManager()
 {
+	glDeleteProgram(shader);
 }
 
 

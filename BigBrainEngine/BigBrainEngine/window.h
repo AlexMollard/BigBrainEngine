@@ -11,7 +11,7 @@ float delta = 1.0f;
 
 // Window Functions
 int Window_intit(int width, int height, char* name);
-void Window_update(void (*update)(float));
+void Window_update();
 int Window_shouldClose();
 void Window_destroy();
 
@@ -25,6 +25,7 @@ int Window_intit(int width, int height, char* name)
 	glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
 	Window = glfwCreateWindow(width, height, name, NULL, NULL);
 
+	
 	if (!Window)
 	{
 		glfwTerminate();
@@ -37,17 +38,11 @@ int Window_intit(int width, int height, char* name)
 
 }
 
-void Window_update(void(*update)(float))
+void Window_update()
 {
 	last = glfwGetTime();
 
 	// Clear the window
-
-	(*update)(delta);
-
-
-
-
 
 	glfwSwapBuffers(Window);
 	glfwPollEvents();

@@ -165,16 +165,28 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="ColourManager.cpp" />
+    <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="Main.cpp">
       <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">C:\OpenGL\glew\include;C:\OpenGL\glfw;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">C:\OpenGL\glew\include;C:\OpenGL\glfw;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
+    <ClCompile Include="MaterialManager.cpp" />
+    <ClCompile Include="ModelManager.cpp" />
     <ClCompile Include="ShaderManager.cpp" />
+    <ClCompile Include="VertexManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BigBrainMath.h" />
+    <ClInclude Include="Camera.h" />
+    <ClInclude Include="ColourManager.h" />
+    <ClInclude Include="GameObject.h" />
+    <ClInclude Include="MaterialManager.h" />
+    <ClInclude Include="ModelManager.h" />
     <ClInclude Include="ShaderManager.h" />
     <ClInclude Include="Shapes.h" />
+    <ClInclude Include="VertexManager.h" />
     <ClInclude Include="window.h" />
   </ItemGroup>
   <ItemGroup>
