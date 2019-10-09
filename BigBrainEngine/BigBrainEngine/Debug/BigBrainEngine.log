@@ -1,3 +1,10 @@
-﻿  Main.cpp
-c:\users\s191067\desktop\engine\trunk\bigbrainengine\bigbrainengine\main.cpp(40): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+﻿  Camera.cpp
+c:\users\s191067\desktop\engine\trunk\bigbrainengine\bigbrainengine\camera.cpp(49): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+c:\users\s191067\desktop\engine\trunk\bigbrainengine\bigbrainengine\camera.cpp(50): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+c:\users\s191067\desktop\engine\trunk\bigbrainengine\bigbrainengine\camera.cpp(54): warning C4305: 'initializing': truncation from 'double' to 'float'
+  GameObject.cpp
+  ModelManager.cpp
+  Generating Code...
+  Main.cpp
+c:\users\s191067\desktop\engine\trunk\bigbrainengine\bigbrainengine\main.cpp(26): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
   BigBrainEngine.vcxproj -> C:\Users\s191067\Desktop\Engine\trunk\BigBrainEngine\Debug\BigBrainEngine.exe

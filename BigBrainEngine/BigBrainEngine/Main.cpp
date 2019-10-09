@@ -8,7 +8,6 @@
 #define xRES 720
 #define yRES 480
 bool WindowClose = false;
-float y = 0.0f;
 
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
@@ -16,19 +15,6 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 	{
 		// Destroy the window and free memory
 		WindowClose = true;
-	}
-
-	if (key == GLFW_KEY_SPACE && action == GLFW_PRESS)
-	{
-		// Destroy the window and free memory
-		if (y == 0.5f)
-		{
-			y = 0.0f;
-		}
-		else
-		{
-			y = 0.5f;
-		}
 	}
 }
 
@@ -72,7 +58,6 @@ int main(int argc)
 		Window_update();
 		camera->Update(delta, Window);
 		cube->Update(delta);
-		cube->setPosition(glm::vec3(0, y, 0));
 	}
 
 	// Destroy the window and free memory
