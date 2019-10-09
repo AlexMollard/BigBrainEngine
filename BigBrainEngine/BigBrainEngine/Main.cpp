@@ -3,12 +3,12 @@
 #include "window.h"
 #include "Shapes.h"
 #include "Camera.h"
-#include "ModelManager.h"
+#include "GameObject.h"
 #include <crtdbg.h>
 #define xRES 720
 #define yRES 480
 bool WindowClose = false;
-
+float y = 0.0f;
 
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
@@ -16,6 +16,19 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 	{
 		// Destroy the window and free memory
 		WindowClose = true;
+	}
+
+	if (key == GLFW_KEY_SPACE && action == GLFW_PRESS)
+	{
+		// Destroy the window and free memory
+		if (y == 0.5f)
+		{
+			y = 0.0f;
+		}
+		else
+		{
+			y = 0.5f;
+		}
 	}
 }
 
@@ -43,7 +56,7 @@ int main(int argc)
 	std::cout << "OpenGL Version: " << glGetString(GL_VERSION) << std::endl;
 
 	Camera* camera = new Camera();
-	ModelManager* model = new ModelManager(camera);
+	GameObject* cube = new GameObject(camera, glm::vec3(0,0,0));
 
 	// Get user input
 	glfwSetKeyCallback(Window, key_callback);
@@ -52,17 +65,20 @@ int main(int argc)
 	glEnable(GL_DEPTH_TEST);
 	glDepthFunc(GL_LESS);
 
+
 	// If the window is not closed enable the engine loop
 	while (!Window_shouldClose() && !WindowClose)
 	{
 		Window_update();
-		model->Update(delta);
+		camera->Update(delta, Window);
+		cube->Update(delta);
+		cube->setPosition(glm::vec3(0, y, 0));
 	}
 
 	// Destroy the window and free memory
 	Window_destroy();
 
-	delete model;
+	delete cube;
 	delete camera;
 
 	return 0;

@@ -8,7 +8,7 @@ public:
 	ModelManager(Camera* cam);
 	~ModelManager();
 
-	void Update(float deltaTime);
+	void Draw(float deltaTime);
 
 	Camera* camera;
 	MaterialManager* materialManager;

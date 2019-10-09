@@ -1,2 +1,3 @@
-﻿  ModelManager.cpp
+﻿  Main.cpp
+c:\users\s191067\desktop\engine\trunk\bigbrainengine\bigbrainengine\main.cpp(40): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
   BigBrainEngine.vcxproj -> C:\Users\s191067\Desktop\Engine\trunk\BigBrainEngine\Debug\BigBrainEngine.exe

@@ -24,11 +24,10 @@ ModelManager::~ModelManager()
 	delete vertexManager;
 }
 
-void ModelManager::Update(float deltaTime)
+void ModelManager::Draw(float deltaTime)
 {
 	tempValue = deltaTime / 10;
-	Model = glm::rotate(Model,tempValue, glm::vec3(1));
-	Model = glm::translate(Model, glm::vec3(0, 0, 0));
+	//Model = glm::rotate(Model,tempValue, glm::vec3(1));
 
 	materialManager->Update(deltaTime);
 	vertexManager->Update();
