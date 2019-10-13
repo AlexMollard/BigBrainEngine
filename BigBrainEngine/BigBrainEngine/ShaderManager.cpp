@@ -2,7 +2,7 @@
 
 ShaderManager::ShaderManager(std::string shaderDIR)
 {
-	ShaderPROSource source = ParseShader("Basic.shader");
+	ShaderPROSource source = ParseShader(shaderDIR);
 	shader = CreateShader(source.VertexSource, source.FragmentSource);
 }
 

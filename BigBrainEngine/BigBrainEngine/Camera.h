@@ -11,7 +11,7 @@ public:
 	glm::mat4 View;
 
 	void Update(float deltaTime, GLFWwindow *window);
-	void processInput(GLFWwindow *window);
+	void processInput(GLFWwindow *window, float deltaTime);
 	const GLFWvidmode* windowMode;
 	void mouse_callback(GLFWwindow* window, double xpos, double ypos);
 	glm::vec3 cameraPos = glm::vec3(0.0f, 1.0f, 3.0f);

@@ -1,6 +1,7 @@
 #pragma once
 #include "MaterialManager.h"
 #include "VertexManager.h"
+#include "TextureManager.h" 
 #include "Camera.h"
 class ModelManager
 {
@@ -13,6 +14,7 @@ public:
 	Camera* camera;
 	MaterialManager* materialManager;
 	VertexManager* vertexManager;
+	TextureManager* textureManager;
 	GLuint MatrixID;
 
 	float tempValue;

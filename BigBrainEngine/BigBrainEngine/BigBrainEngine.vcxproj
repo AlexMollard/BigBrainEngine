@@ -175,6 +175,7 @@
     <ClCompile Include="MaterialManager.cpp" />
     <ClCompile Include="ModelManager.cpp" />
     <ClCompile Include="ShaderManager.cpp" />
+    <ClCompile Include="TextureManager.cpp" />
     <ClCompile Include="VertexManager.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -186,6 +187,7 @@
     <ClInclude Include="ModelManager.h" />
     <ClInclude Include="ShaderManager.h" />
     <ClInclude Include="Shapes.h" />
+    <ClInclude Include="TextureManager.h" />
     <ClInclude Include="VertexManager.h" />
     <ClInclude Include="window.h" />
   </ItemGroup>

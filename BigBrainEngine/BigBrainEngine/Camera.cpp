@@ -17,13 +17,13 @@ Camera::~Camera()
 
 void Camera::Update(float deltaTime, GLFWwindow *window)
 {
-	processInput(window);
+	processInput(window, deltaTime);
 	View = glm::lookAt(cameraPos, cameraPos + cameraFront, cameraUp);
 }
 
-void Camera::processInput(GLFWwindow *window)
+void Camera::processInput(GLFWwindow *window, float deltaTime)
 {
-	cameraSpeed = 0.05f; // adjust accordingly
+	cameraSpeed = deltaTime; // adjust accordingly
 	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
 		cameraPos += cameraSpeed * cameraFront;
 	if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
@@ -34,7 +34,7 @@ void Camera::processInput(GLFWwindow *window)
 		cameraPos += glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed;
 	
 	glfwGetCursorPos(window, &mouseX, &mouseY);
-	mouse_callback(window, mouseX, mouseY);
+	//mouse_callback(window, mouseX, mouseY);
 }
 
 void Camera::mouse_callback(GLFWwindow* window, double xpos, double ypos)
@@ -51,7 +51,7 @@ void Camera::mouse_callback(GLFWwindow* window, double xpos, double ypos)
 	lastX = xpos;
 	lastY = ypos;
 
-	float sensitivity = 0.05;
+	float sensitivity = 0.005;
 	xoffset *= sensitivity;
 	yoffset *= sensitivity;
 
@@ -68,4 +68,5 @@ void Camera::mouse_callback(GLFWwindow* window, double xpos, double ypos)
 	front.y = sin(glm::radians(pitch));
 	front.z = sin(glm::radians(yaw)) * cos(glm::radians(pitch));
 	cameraFront = glm::normalize(front);
+
 }

@@ -5,8 +5,9 @@
 ModelManager::ModelManager(Camera* cam)
 {
 	camera = cam;
-	materialManager = new MaterialManager("Basic.Shader", 12 * 3 * 3);
+	materialManager = new MaterialManager("BasicTwo.Shader", 12 * 3 * 3);
 	vertexManager = new VertexManager();
+	textureManager = new TextureManager();
 
 	Model = glm::mat4(1.0f);
 
@@ -22,6 +23,7 @@ ModelManager::~ModelManager()
 {
 	delete materialManager;
 	delete vertexManager;
+	delete textureManager;
 }
 
 void ModelManager::Draw(float deltaTime)
