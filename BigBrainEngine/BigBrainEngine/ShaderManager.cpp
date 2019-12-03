@@ -6,12 +6,10 @@ ShaderManager::ShaderManager(std::string shaderDIR)
 	shader = CreateShader(source.VertexSource, source.FragmentSource);
 }
 
-
 ShaderManager::~ShaderManager()
 {
 	glDeleteProgram(shader);
 }
-
 
 ShaderPROSource ShaderManager::ParseShader(const std::string& filePath)
 {
@@ -92,7 +90,6 @@ unsigned int ShaderManager::CreateShader(const std::string& vertexShader, const 
 		std::cout << "Error linking shader program:" << std::endl;
 		std::cout << errorMessage << std::endl;
 	}
-
 
 	glDeleteShader(vs);
 	glDeleteShader(fs);

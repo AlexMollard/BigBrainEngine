@@ -26,7 +26,4 @@ public:
 
 	//Uniforms
 	GLuint shader;
-
 };
-
-

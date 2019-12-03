@@ -1,7 +1,6 @@
 #include "VertexManager.h"
 #include "ShaderManager.h"
 
-
 VertexManager::VertexManager()
 {
 	glGenBuffers(1, &vBuffer); // Vertex buffer
@@ -30,7 +29,6 @@ VertexManager::VertexManager()
 	glVertexPointer(3, GL_FLOAT, 0, nullptr);
 }
 
-
 VertexManager::~VertexManager()
 {
 	// disable vertex arrays
@@ -45,7 +43,6 @@ void VertexManager::Update()
 {
 	glBindBuffer(GL_ARRAY_BUFFER, vBuffer);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, iBuffer);
-
 
 	// enable vertex arrays
 	glEnableClientState(GL_VERTEX_ARRAY);

@@ -1,21 +1,19 @@
 #include "ColourManager.h"
 
-
-
-Colour::Colour(int bufferSize)
+Colour::Colour(int bufferSize, glm::vec3 colorData)
 {
 	// Assign random colors for each vert
 	for (int v = 0; v < 12 * 3; v++)
 	{
-		GLfloat u = (rand() % 10000) / 10000.0;
+		GLfloat u = colorData.x;
 		round(u);
 		colorBufferData.push_back(u);
 
-		u = (rand() % 10000) / 10000.0;
+		u = colorData.y;
 		round(u);
 		colorBufferData.push_back(u);
 
-		u = (rand() % 10000) / 10000.0;
+		u = colorData.z;
 		round(u);
 		colorBufferData.push_back(u);
 	}
@@ -25,7 +23,6 @@ Colour::Colour(int bufferSize)
 	glBindBuffer(GL_ARRAY_BUFFER, colorbuffer);
 	glBufferData(GL_ARRAY_BUFFER, colorBufferData.size() * sizeof(GLfloat), colorBufferData.data(), GL_STATIC_DRAW);
 }
-
 
 Colour::~Colour()
 {

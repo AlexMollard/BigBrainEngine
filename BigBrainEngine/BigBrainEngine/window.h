@@ -23,9 +23,18 @@ int Window_intit(int width, int height, char* name)
 	}
 
 	glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
-	Window = glfwCreateWindow(width, height, name, NULL, NULL);
 
-	
+	//int count;
+	//GLFWmonitor** monitors = glfwGetMonitors(&count);
+	//
+	//if (count > 0)
+	//	Window = glfwCreateWindow(width, height, name, monitors[1], NULL);
+	//else
+	//	Window = glfwCreateWindow(width, height, name, glfwGetPrimaryMonitor(), NULL);
+
+	Window = glfwCreateWindow(width, height, name, NULL, NULL);
+	glfwMakeContextCurrent(Window);
+	glfwSwapInterval(0);
 	if (!Window)
 	{
 		glfwTerminate();
@@ -35,15 +44,10 @@ int Window_intit(int width, int height, char* name)
 	glfwMakeContextCurrent(Window);
 
 	return 1;
-
 }
 
 void Window_update()
 {
-	last = glfwGetTime();
-
-	// Clear the window
-
 	glfwSwapBuffers(Window);
 	glfwPollEvents();
 
@@ -51,7 +55,8 @@ void Window_update()
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	now = glfwGetTime();
-	delta = (float)(now - last) * 10.0f;
+	delta = (float)(now - last);
+	last = now;
 }
 
 int Window_shouldClose()

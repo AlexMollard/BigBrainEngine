@@ -4,7 +4,7 @@
 class MaterialManager
 {
 public:
-	MaterialManager(std::string shaderDIR, int colorBufferSize);
+	MaterialManager(std::string shaderDIR, int colorBufferSize, glm::vec3 colorData);
 	~MaterialManager();
 
 	void Update(float deltaTime);
@@ -27,4 +27,3 @@ public:
 	GLuint iResolution;
 	GLuint iTime;
 };
-

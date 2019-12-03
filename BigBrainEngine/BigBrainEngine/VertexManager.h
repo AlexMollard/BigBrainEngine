@@ -12,4 +12,3 @@ public:
 	unsigned int iBuffer;
 	Cube3D newCube;
 };
-

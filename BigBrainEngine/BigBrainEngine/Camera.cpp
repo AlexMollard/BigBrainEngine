@@ -10,7 +10,6 @@ Camera::Camera()
 	View = glm::lookAt(glm::vec3(1, 2, 5), glm::vec3(0, 0, 0), glm::vec3(0, 1, 0));
 }
 
-
 Camera::~Camera()
 {
 }
@@ -23,7 +22,11 @@ void Camera::Update(float deltaTime, GLFWwindow *window)
 
 void Camera::processInput(GLFWwindow *window, float deltaTime)
 {
-	cameraSpeed = deltaTime; // adjust accordingly
+	if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS)
+		cameraSpeed = deltaTime * 4.0f;
+	else
+		cameraSpeed = deltaTime * 2.0f;
+
 	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
 		cameraPos += cameraSpeed * cameraFront;
 	if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
@@ -32,9 +35,9 @@ void Camera::processInput(GLFWwindow *window, float deltaTime)
 		cameraPos -= glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed;
 	if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
 		cameraPos += glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed;
-	
+
 	glfwGetCursorPos(window, &mouseX, &mouseY);
-	//mouse_callback(window, mouseX, mouseY);
+	mouse_callback(window, mouseX, mouseY);
 }
 
 void Camera::mouse_callback(GLFWwindow* window, double xpos, double ypos)
@@ -51,7 +54,7 @@ void Camera::mouse_callback(GLFWwindow* window, double xpos, double ypos)
 	lastX = xpos;
 	lastY = ypos;
 
-	float sensitivity = 0.005;
+	float sensitivity = 0.05;
 	xoffset *= sensitivity;
 	yoffset *= sensitivity;
 
@@ -68,5 +71,4 @@ void Camera::mouse_callback(GLFWwindow* window, double xpos, double ypos)
 	front.y = sin(glm::radians(pitch));
 	front.z = sin(glm::radians(yaw)) * cos(glm::radians(pitch));
 	cameraFront = glm::normalize(front);
-
 }

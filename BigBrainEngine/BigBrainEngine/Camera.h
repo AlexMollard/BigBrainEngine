@@ -29,4 +29,3 @@ public:
 	int windowWidth;
 	int windowHeight;
 };
-

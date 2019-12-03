@@ -1,12 +1,11 @@
 #include "MaterialManager.h"
 
-
-MaterialManager::MaterialManager(std::string shaderDIR, int colorBufferSize)
+MaterialManager::MaterialManager(std::string shaderDIR, int colorBufferSize, glm::vec3 colour)
 {
 	shaderManager = new ShaderManager(shaderDIR);
 	shaderProgram = shaderManager->shader;
 
-	colorManager = new Colour(colorBufferSize);
+	colorManager = new Colour(colorBufferSize, colour);
 	colorBuffer = colorManager->colorbuffer;
 
 	windowMode = glfwGetVideoMode(glfwGetPrimaryMonitor());
@@ -19,7 +18,6 @@ MaterialManager::MaterialManager(std::string shaderDIR, int colorBufferSize)
 	iResolution = glGetUniformLocation(shaderProgram, "iResolution");
 	iTime = glGetUniformLocation(shaderProgram, "iTime");
 }
-
 
 MaterialManager::~MaterialManager()
 {

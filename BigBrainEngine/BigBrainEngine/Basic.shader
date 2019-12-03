@@ -1,7 +1,7 @@
 #shader vertex
 #version 330 core
 
-layout(location = 0) in vec3 Position; 
+layout(location = 0) in vec3 Position;
 layout(location = 1) in vec3 vertexColor;
 uniform float gScale;
 uniform mat4 MVP;
@@ -18,11 +18,10 @@ void main()
 	gl_Position = MVP * vec4(Position, 1.0);
 }
 
-
 #shader fragment
 #version 330 core
 
-out vec4 FragColor; 
+out vec4 FragColor;
 in vec4 gl_FragCoord;
 in vec2 uv;
 in vec3 fragmentColor;

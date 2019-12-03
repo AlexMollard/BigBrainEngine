@@ -3,7 +3,7 @@
 class Colour
 {
 public:
-	Colour(int BufferSize);
+	Colour(int BufferSize, glm::vec3 colourData);
 	~Colour();
 
 	//12 * 3 * 3
@@ -11,4 +11,3 @@ public:
 
 	GLuint colorbuffer;
 };
-

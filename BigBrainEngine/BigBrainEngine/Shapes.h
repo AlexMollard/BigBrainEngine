@@ -2,7 +2,6 @@
 #define MATH_HEADER
 #include "BigBrainMath.h"
 
-
 struct Cube3D
 {
 	float vertices[72] =
@@ -24,7 +23,6 @@ struct Cube3D
 			16,17,18,  18,19,16,    // v7-v4-v3, v3-v2-v7 (bottom)
 			20,21,22,  22,23,20     // v4-v7-v6, v6-v5-v4 (back)
 	};
-
 };
 
 #endif

@@ -1,11 +1,10 @@
 #include "ModelManager.h"
 
-
-
-ModelManager::ModelManager(Camera* cam)
+ModelManager::ModelManager(Camera* cam, glm::vec3 colorData)
 {
 	camera = cam;
-	materialManager = new MaterialManager("BasicTwo.Shader", 12 * 3 * 3);
+	materialManager = new MaterialManager("BasicTwo.Shader", 12 * 3 * 3, colorData);
+
 	vertexManager = new VertexManager();
 	textureManager = new TextureManager();
 
@@ -15,9 +14,7 @@ ModelManager::ModelManager(Camera* cam)
 
 	glUniformMatrix4fv(MatrixID, 1, GL_FALSE, &mvp[0][0]);
 	tempValue = 0.0f;
-
 }
-
 
 ModelManager::~ModelManager()
 {
@@ -28,7 +25,7 @@ ModelManager::~ModelManager()
 
 void ModelManager::Draw(float deltaTime)
 {
-	tempValue = deltaTime / 10;
+	//tempValue = deltaTime / 10;
 	//Model = glm::rotate(Model,tempValue, glm::vec3(1));
 
 	materialManager->Update(deltaTime);

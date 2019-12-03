@@ -3,6 +3,7 @@
 
 layout(location = 0) in vec3 vertexPosition_modelspace;
 layout(location = 1) in vec2 vertexUV;
+layout(location = 2) in vec3 vertexColor;
 uniform float gScale;
 uniform mat4 MVP;
 out vec2 uv;
@@ -14,7 +15,6 @@ void main()
 
 	uv = vertexUV;
 }
-
 
 #shader fragment
 #version 330 core
@@ -30,5 +30,7 @@ uniform float iTime;
 
 void main()
 {
+	//Tex = texture(myTextureSampler, uv).rgba;
+	//FragColor = Tex * vertexColor;
 	FragColor = texture(myTextureSampler, uv).rgba;
 }
