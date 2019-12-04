@@ -22,15 +22,7 @@ int Window_intit(int width, int height, char* name)
 		return -1;
 	}
 
-	glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
-
-	//int count;
-	//GLFWmonitor** monitors = glfwGetMonitors(&count);
-	//
-	//if (count > 0)
-	//	Window = glfwCreateWindow(width, height, name, monitors[1], NULL);
-	//else
-	//	Window = glfwCreateWindow(width, height, name, glfwGetPrimaryMonitor(), NULL);
+	glfwWindowHint(GLFW_RESIZABLE, GL_TRUE);
 
 	Window = glfwCreateWindow(width, height, name, NULL, NULL);
 	glfwMakeContextCurrent(Window);
@@ -42,6 +34,12 @@ int Window_intit(int width, int height, char* name)
 	}
 
 	glfwMakeContextCurrent(Window);
+
+	// Allow GPU to not draw vert over other verts
+	glEnable(GL_CULL_FACE);
+	glCullFace(GL_BACK);
+	glEnable(GL_DEPTH_TEST);
+	glDepthFunc(GL_LESS);
 
 	return 1;
 }

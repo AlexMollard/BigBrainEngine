@@ -1,13 +1,22 @@
 #include "Camera.h"
+int width, height;
+glm::mat4 newProjection;
+void window_size_callback(GLFWwindow* window, int width, int height)
+{
+	glfwGetWindowSize(window, &width, &height);
+	newProjection = glm::perspective((float)glm::radians(45.0f), (float)width / (float)height, 0.1f, 100.0f);
+	glViewport(0, 0, width, height);
+}
 
-Camera::Camera()
+Camera::Camera(GLFWwindow* window)
 {
 	windowMode = glfwGetVideoMode(glfwGetPrimaryMonitor());
-	windowWidth = windowMode->width;
-	windowHeight = windowMode->height;
 
-	Projection = glm::perspective((float)glm::radians(45.0f), (float)windowWidth / (float)windowWidth, 0.1f, 100.0f);
+	Projection = glm::perspective((float)glm::radians(45.0f), 0.0f, 0.1f, 100.0f);
 	View = glm::lookAt(glm::vec3(1, 2, 5), glm::vec3(0, 0, 0), glm::vec3(0, 1, 0));
+
+	glfwSetWindowSizeCallback(window, window_size_callback);
+	window_size_callback(window, (float)windowWidth, (float)windowWidth);
 }
 
 Camera::~Camera()
@@ -16,7 +25,10 @@ Camera::~Camera()
 
 void Camera::Update(float deltaTime, GLFWwindow *window)
 {
-	processInput(window, deltaTime);
+	//processInput(window, deltaTime);
+
+	Projection = newProjection;
+
 	View = glm::lookAt(cameraPos, cameraPos + cameraFront, cameraUp);
 }
 

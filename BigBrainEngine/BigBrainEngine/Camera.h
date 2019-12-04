@@ -4,7 +4,7 @@
 class Camera
 {
 public:
-	Camera();
+	Camera(GLFWwindow* window);
 	~Camera();
 
 	glm::mat4 Projection;

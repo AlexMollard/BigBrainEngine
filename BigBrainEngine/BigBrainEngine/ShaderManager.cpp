@@ -75,6 +75,10 @@ unsigned int ShaderManager::CreateShader(const std::string& vertexShader, const 
 	unsigned int vs = CompileShader(GL_VERTEX_SHADER, vertexShader);
 	unsigned int fs = CompileShader(GL_FRAGMENT_SHADER, fragmentShader);
 
+	glBindAttribLocation(program, 0, "position");
+	glBindAttribLocation(program, 1, "color");
+	glBindAttribLocation(program, 2, "uvs");
+
 	glAttachShader(program, vs);
 	glAttachShader(program, fs);
 	glLinkProgram(program);

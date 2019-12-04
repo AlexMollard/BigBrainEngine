@@ -14,7 +14,7 @@ public:
 	void Draw(float deltaTime);
 	float fTime = 0.0f;
 
-	void setPosition(glm::vec3 newPos);
+	void setPosition(glm::vec3 newPos, float delta);
 	glm::vec3 getPosition();
 	glm::vec3 ObjectColour;
 };

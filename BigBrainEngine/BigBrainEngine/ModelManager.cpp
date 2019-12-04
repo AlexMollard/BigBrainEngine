@@ -3,7 +3,7 @@
 ModelManager::ModelManager(Camera* cam, glm::vec3 colorData)
 {
 	camera = cam;
-	materialManager = new MaterialManager("BasicTwo.Shader", 12 * 3 * 3, colorData);
+	materialManager = new MaterialManager("Basic.Shader", 12 * 3 * 3, colorData);
 
 	vertexManager = new VertexManager();
 	textureManager = new TextureManager();
@@ -13,7 +13,6 @@ ModelManager::ModelManager(Camera* cam, glm::vec3 colorData)
 	MatrixID = glGetUniformLocation(materialManager->shaderProgram, "MVP");
 
 	glUniformMatrix4fv(MatrixID, 1, GL_FALSE, &mvp[0][0]);
-	tempValue = 0.0f;
 }
 
 ModelManager::~ModelManager()

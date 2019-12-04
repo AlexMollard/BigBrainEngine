@@ -1,1 +1,4 @@
-﻿c:\users\s191067\desktop\bigbrainengine.git\trunk\bigbrainengine\bigbrainengine\materialmanager.cpp(48): warning C4244: 'argument': conversion from 'int' to 'GLfloat', possible loss of data
+﻿c:\users\s191067\desktop\bigbrainengine.git\trunk\bigbrainengine\bigbrainengine\camera.cpp(19): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+c:\users\s191067\desktop\bigbrainengine.git\trunk\bigbrainengine\bigbrainengine\camera.cpp(64): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+c:\users\s191067\desktop\bigbrainengine.git\trunk\bigbrainengine\bigbrainengine\camera.cpp(65): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+c:\users\s191067\desktop\bigbrainengine.git\trunk\bigbrainengine\bigbrainengine\camera.cpp(69): warning C4305: 'initializing': truncation from 'double' to 'float'

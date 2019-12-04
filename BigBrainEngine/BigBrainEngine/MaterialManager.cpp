@@ -12,7 +12,7 @@ MaterialManager::MaterialManager(std::string shaderDIR, int colorBufferSize, glm
 	windowWidth = windowMode->width;
 	windowHeight = windowMode->height;
 
-	vertexAttribute = GL_VERTEX_ARRAY;
+	//vertexAttribute = GL_VERTEX_ARRAY;
 
 	// Uniforms
 	iResolution = glGetUniformLocation(shaderProgram, "iResolution");
@@ -35,14 +35,14 @@ void MaterialManager::Update(float deltaTime)
 	glUseProgram(shaderProgram);
 
 	// Binding color buffer
-	glBindBuffer(GL_ARRAY_BUFFER, colorBuffer);
+	//glBindBuffer(GL_ARRAY_BUFFER, colorBuffer);
 
-	glEnableVertexAttribArray(1);
 
-	glEnableVertexAttribArray(vertexAttribute);
-	glVertexAttribPointer(vertexAttribute, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
+	glEnableVertexAttribArray(0);
 
 	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 0, 0);
+	glEnableVertexAttribArray(1);
 
 	// Change uniforms
 	glUniform2f(iResolution, windowWidth, windowHeight);

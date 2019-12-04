@@ -1,36 +1,39 @@
 #shader vertex
 #version 330 core
 
-layout(location = 0) in vec3 vertexPosition_modelspace;
-layout(location = 1) in vec2 vertexUV;
-layout(location = 2) in vec3 vertexColor;
+//In from CPU
+layout(location = 0) in vec3 Position;
+layout(location = 1) in vec3 vertexColor;
+layout(location = 2) in vec2 vertexUV;
 uniform float gScale;
 uniform mat4 MVP;
-out vec2 uv;
 
+//Vertex shader
+out vec3 fragmentColor;
+out vec2 uv;
 void main()
 {
-	// Output position of the vertex, in clip space : MVP * position
-	gl_Position = MVP * vec4(vertexPosition_modelspace, 1);
-
+	fragmentColor = vertexColor;
 	uv = vertexUV;
+	gl_Position = MVP * vec4(Position, 1.0);
 }
 
+//Fragment shader
 #shader fragment
 #version 330 core
 
-out vec4 FragColor;
-in vec4 gl_FragCoord;
-in vec2 uv;
-
 uniform sampler2D myTextureSampler;
-uniform vec2 iResolution;
-uniform vec3 triColour;
-uniform float iTime;
+in vec2 uv;
+in vec3 fragmentColor;
+out vec4 FragColor;
 
 void main()
 {
 	//Tex = texture(myTextureSampler, uv).rgba;
-	//FragColor = Tex * vertexColor;
-	FragColor = texture(myTextureSampler, uv).rgba;
+	//FragColor = Tex * fragmentColor;
+	//FragColor = texture(myTextureSampler, uv).rgba;
+	//FragColor = texture(myTextureSampler, uv).rgba * vec4(FragColor);
+	//FragColor = vec4(fragmentColor, 1.0);
+	FragColor = vec4(uv.x, uv.y, 0.0, 1.0);
+
 }

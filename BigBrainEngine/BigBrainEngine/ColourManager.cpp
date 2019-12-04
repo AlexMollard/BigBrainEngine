@@ -18,6 +18,7 @@ Colour::Colour(int bufferSize, glm::vec3 colorData)
 		colorBufferData.push_back(u);
 	}
 
+
 	//Set up for model, can go in model file
 	glGenBuffers(1, &colorbuffer);
 	glBindBuffer(GL_ARRAY_BUFFER, colorbuffer);
