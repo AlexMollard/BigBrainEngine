@@ -26,4 +26,6 @@ public:
 	//Uniforms
 	GLuint iResolution;
 	GLuint iTime;
+	GLuint colourUniform;
+	glm::uvec3 vertexColour;
 };

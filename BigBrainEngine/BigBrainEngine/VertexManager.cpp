@@ -12,8 +12,6 @@ VertexManager::VertexManager()
 	glBufferData(GL_ARRAY_BUFFER, vSize, 0, GL_STATIC_DRAW);
 	glBufferSubData(GL_ARRAY_BUFFER, 0, vSize, newCube.vertices);
 
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
-
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, iBuffer);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(newCube.indices), newCube.indices, GL_STATIC_DRAW);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
@@ -41,12 +39,14 @@ VertexManager::~VertexManager()
 
 void VertexManager::Update()
 {
-	glBindBuffer(GL_ARRAY_BUFFER, vBuffer);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, iBuffer);
+	// Only needs to happen if model changes
 
+	//glBindBuffer(GL_ARRAY_BUFFER, vBuffer);
+	//glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, iBuffer);
+	//
 	// enable vertex arrays
-	glEnableClientState(GL_VERTEX_ARRAY);
+	//glEnableClientState(GL_VERTEX_ARRAY);
 
 	// specify vertex arrays with their offsets
-	glVertexPointer(3, GL_FLOAT, 0, nullptr);
+	//glVertexPointer(3, GL_FLOAT, 0, nullptr);
 }

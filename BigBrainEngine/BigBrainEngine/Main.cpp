@@ -7,8 +7,8 @@
 #include <time.h>
 #include <crtdbg.h>
 #include <stdio.h>
-#define xRES 700
-#define yRES 700
+#define xRES 1000
+#define yRES 1000
 bool WindowClose = false;
 double previousTime = 0;
 int frameCount = 0;

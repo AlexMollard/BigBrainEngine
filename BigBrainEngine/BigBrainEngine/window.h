@@ -26,7 +26,7 @@ int Window_intit(int width, int height, char* name)
 
 	Window = glfwCreateWindow(width, height, name, NULL, NULL);
 	glfwMakeContextCurrent(Window);
-	glfwSwapInterval(0);
+	glfwSwapInterval(2);
 	if (!Window)
 	{
 		glfwTerminate();
